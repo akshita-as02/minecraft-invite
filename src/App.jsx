@@ -68,6 +68,7 @@
 
 import { useState, useEffect } from "react";
 import emailjs from "@emailjs/browser";
+import meet_info from "/assets/meet_info.json";
 
 function App() {
   const [emailSent, setEmailSent] = useState(false);
@@ -79,9 +80,9 @@ function App() {
   const sendEmail = () => {
     const meetLink = "https://meet.google.com/fbe-cozj-vdp"; // Use the permanent link
     const templateParams = {
-      to_name: "Your Boyfriend's Name",
-      from_name: "Akshita 💖",
-      to_email: "akshita03.as@gmail.com, akshizzz02@gmail.com", // Both emails
+      to_name: config.boyfriend_name,
+      from_name: config.your_name,
+      to_email: `${config.your_email}, ${config.boyfriend_email}`, // Both emails
       message: `Hey! Join our Minecraft date night here: ${meetLink} 💕🎮`,
     };
 
