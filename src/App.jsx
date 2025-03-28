@@ -156,8 +156,8 @@ function App() {
   return (
     <div className="flex flex-col items-center justify-center h-screen w-full text-center relative" style={{ background: 'linear-gradient(180deg, #6FB5FF 0%, #FFD6AA 57%, #FAB4EA 100%)' }}>
       <div className="background-container">
-        <img src="/src/assets/Bee_BE.webp" alt="bee image" className="bee-image" />
-        <img src="/src/assets/bg-stuff.png" alt="Background Image" className="background-image" />
+        <img src="/assets/Bee_BE.webp" alt="bee image" className="bee-image" />
+        <img src="/assets/bg-stuff.png" alt="Background Image" className="background-image" />
       </div>
 
       {showHiMessage && (
