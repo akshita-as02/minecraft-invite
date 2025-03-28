@@ -46,7 +46,7 @@
 //         <img src="/src/assets/Bee_BE.webp" alt="bee image" class="bee-image"/>
 //         <img src="/src/assets/bg-stuff.png" alt="Background Image" class="background-image" />
 //       </div>
-      
+
 //           <h1 className="relative z-10">
 //             {emailSent ? "✅ Check your mail for the invite! 🎉" : showSadMessage ? "Why you do this to me? 😭" : "Do you want to have a Minecraft date night with me? 💖🎮"}
 //           </h1>
@@ -61,29 +61,60 @@
 //           }
 //         </div >
 //       );
-      
+
 // }
 
 //       export default App;
 
 import { useState, useEffect } from "react";
 import emailjs from "@emailjs/browser";
-import meet_info from "/assets/meet_info.json";
+
 
 function App() {
   const [emailSent, setEmailSent] = useState(false);
   const [showSadMessage, setShowSadMessage] = useState(false);
   const [showHiMessage, setShowHiMessage] = useState(true); // New state to control Hi message visibility
   const [showQuestion, setShowQuestion] = useState(false); // State to control when the question appears
+  const [meetLink, setMeetLink] = useState({ meet_link: "" });
+  const [partnerInfo, setPartnerInfo] = useState({
+    boyfriend_name: "",
+    boyfriend_email: "",
+    your_name: "",
+    your_email: "",
+  });
+
+  // Fetch JSON data on mount
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const meetResponse = await fetch("/details/meet_info.json");
+        const meetData = await meetResponse.json();
+        setMeetLink(meetData.meet_link);
+
+        const partnerResponse = await fetch("/details/partner_info.json");
+        const partnerData = await partnerResponse.json();
+        setPartnerInfo(partnerData);
+      } catch (error) {
+        console.error("Error loading JSON data:", error);
+      }
+    }
+
+    fetchData();
+  }, []);
+
 
   // Function to send email
   const sendEmail = () => {
-    const meetLink = "https://meet.google.com/fbe-cozj-vdp"; // Use the permanent link
+    if (!meetLink || !partnerInfo.boyfriend_email || !partnerInfo.your_email || !partnerInfo.your_name) {
+      console.error("Missing required data for email.");
+      return;
+    }
+
     const templateParams = {
-      to_name: config.boyfriend_name,
-      from_name: config.your_name,
-      to_email: `${config.your_email}, ${config.boyfriend_email}`, // Both emails
-      message: `Hey! Join our Minecraft date night here: ${meetLink} 💕🎮`,
+      to_name: partnerInfo.boyfriend_name,
+      from_name: partnerInfo.your_name,
+      to_email: `${partnerInfo.your_email}, ${partnerInfo.boyfriend_email}`,
+      message: `Hey ${partnerInfo.boyfriend_name}! 💕 Join our Minecraft date night here: ${meetLink} 🎮`,
     };
 
     emailjs
@@ -125,7 +156,7 @@ function App() {
   return (
     <div className="flex flex-col items-center justify-center h-screen w-full text-center relative" style={{ background: 'linear-gradient(180deg, #6FB5FF 0%, #FFD6AA 57%, #FAB4EA 100%)' }}>
       <div className="background-container">
-        <img src="/src/assets/Bee_BE.webp" alt="bee image" className="bee-image"/>
+        <img src="/src/assets/Bee_BE.webp" alt="bee image" className="bee-image" />
         <img src="/src/assets/bg-stuff.png" alt="Background Image" className="background-image" />
       </div>
 
