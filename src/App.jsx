@@ -89,8 +89,9 @@ function App() {
       try {
         const meetResponse = await fetch("/details/meet_info.json");
         const meetData = await meetResponse.json();
-        setMeetLink(meetData.meet_link);
-
+        // Set the meet_link state to the value from the JSON
+        setMeetLink(meetData.meet_link); 
+        console.log("Meet Info:", meetData);
         const partnerResponse = await fetch("/details/partner_info.json");
         const partnerData = await partnerResponse.json();
         setPartnerInfo(partnerData);
@@ -114,9 +115,9 @@ function App() {
       to_name: partnerInfo.boyfriend_name,
       from_name: partnerInfo.your_name,
       to_email: `${partnerInfo.your_email}, ${partnerInfo.boyfriend_email}`,
-      message: `Hey ${partnerInfo.boyfriend_name}! 💕 Join our Minecraft date night here: ${meetLink} 🎮`,
+      message: `${meetLink} 🎮`,
     };
-
+    console.log("Email templateParams:", templateParams); // Log the final templateParams object
     emailjs
       .send(
         "service_jyagfo4",
